@@ -2,7 +2,7 @@ FROM php:7-fpm-alpine
 
 MAINTAINER Wilton Garcia <wiltonog@gmail.com>
 
-RUN apk add --no-cache --virtual .build-deps build-base curl git \
+RUN apk add --no-cache --virtual .build-deps build-base curl git autoconf \
     freetype-dev \
     libjpeg-turbo-dev \
     postgresql-dev \
@@ -14,15 +14,14 @@ RUN apk add --no-cache --virtual .build-deps build-base curl git \
     libsasl \
     zlib-dev \
     libcurl \
-    && docker-php-ext-install -j$(nproc) bz2 iconv mcrypt mbstring pdo_mysql mysqli pgsql pdo_pgsql zip curl \
+    curl-dev \
+    bzip2-dev \
+    && docker-php-ext-install bz2 iconv mcrypt mbstring pdo_mysql mysqli pgsql pdo_pgsql zip curl \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) gd
+    && docker-php-ext-install gd
 
 # Install xdebug
 RUN pecl install xdebug && docker-php-ext-enable xdebug
-
-# Install MongoDB
-RUN pecl install mongodb && docker-php-ext-enable mongodb
 
 # Install Redis
 RUN pecl install redis && docker-php-ext-enable redis
