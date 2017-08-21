@@ -30,10 +30,9 @@ RUN echo http://dl-2.alpinelinux.org/alpine/edge/community/ >> /etc/apk/reposito
     && apk update \
     && apk add --no-cache --virtual .build-deps shadow \
     && usermod -h /var/www/html -u 1000 www-data \
-    && groupmod -g 50 www-data
-    
-find / -group 82 -exec chgrp -h www-data {} \;
-find / -user 82 -exec chown -h www-data {} \;
+    && groupmod -g 50 www-data \
+    && find / -group 82 -exec chgrp -h www-data {} \; \
+    && find / -user 82 -exec chown -h www-data {} \;
 
 
 
