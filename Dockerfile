@@ -26,7 +26,14 @@ RUN pecl install xdebug && docker-php-ext-enable xdebug
 # Install Redis
 RUN pecl install redis && docker-php-ext-enable redis
 
-RUN addgroup -S php -g 50 \
-    && adduser -D -S -h /var/www/html -s /sbin/nologin -G php -u 1000 php
+RUN echo http://dl-2.alpinelinux.org/alpine/edge/community/ >> /etc/apk/repositories \
+    && apk update \
+    && apk add --no-cache --virtual .build-deps shadow \
+    && usermod -h /var/www/html -u 1000 www-data \
+    && groupmod -g 50 www-data
+    
+find / -group 82 -exec chgrp -h www-data {} \;
+find / -user 82 -exec chown -h www-data {} \;
+
 
 
