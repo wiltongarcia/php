@@ -26,7 +26,7 @@ RUN pecl install xdebug && docker-php-ext-enable xdebug
 # Install Redis
 RUN pecl install redis && docker-php-ext-enable redis
 
-RUN addgroup -S php -G 50 \
+RUN addgroup -S php -g 50 \
     && adduser -D -S -h /var/www/html -s /sbin/nologin -G php -u 1000 php
 
 
